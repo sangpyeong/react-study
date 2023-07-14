@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Outlet, Route, Routes } from "react-router-dom";
+import Nav from "./components/Nav";
+import Footer from "./components/Footer";
+import MainPage from "./pages/MainPage";
+import AddPage from "./pages/AddPage";
+import DetailPage from "./pages/DetailPage";
+
+const Layout = () => {
+  return (
+    <div>
+      <Nav />
+
+      <Outlet />
+
+      <Footer />
+    </div>
+  );
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="100vh">
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<MainPage />} />
+          <Route path="stocks" element={<MainPage />} />
+          <Route path="stock/add" element={<AddPage />} />
+          <Route path="stock/:id" element={<DetailPage />} />
+        </Route>
+      </Routes>
     </div>
   );
 }
-
 export default App;
