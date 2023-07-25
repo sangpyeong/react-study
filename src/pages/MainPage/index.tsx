@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import Button from "../../components/Button";
 
 export default function MainPage() {
   //const [stocks, setStocks] = useState([]);
   //useEffect(() => {}, []);
+  const navigate = useNavigate();
   const stocks = [
     {
       id: 1,
@@ -27,9 +29,8 @@ export default function MainPage() {
       tradingVolume: 148.56,
     },
   ];
-  const handleCreate = () => {
-    console.log("test)");
-    return;
+  const handleCreateButton = () => {
+    navigate("/stock/add");
   };
   return (
     <div className="flex flex-col h-[80vh] w-[100%]">
@@ -50,12 +51,9 @@ export default function MainPage() {
           </li>
         ))}
       </ul>
-      <NavLink
-        to={"/stock/add"}
-        className="flex justify-center bg-slate-400 border-black border-[1px] w-[50px]"
-      >
+      <Button onClick={handleCreateButton} className="w-[10%]">
         추가
-      </NavLink>
+      </Button>
     </div>
   );
 }
