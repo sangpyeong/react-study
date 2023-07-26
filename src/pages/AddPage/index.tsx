@@ -20,14 +20,15 @@ export default function AddPage() {
     });
     //fetch방법도 생각해보자
     axios
-      .post("localhost8080:stock/add", {
+      .post("http://localhost:8080/stock/add", {
         stockName: stockName,
-        currentPrice: currentPrice,
-        marketCapitalization: marketCapitalization,
-        tradingVolume: tradingVolume,
+        currentPrice: parseInt(currentPrice),
+        marketCapitalization: parseInt(marketCapitalization),
+        tradingVolume: parseInt(tradingVolume),
       })
       .then((res) => {
         console.log(res.data);
+        navigate(`/stocks`);
       })
       .catch((err) => {
         console.log(err);
