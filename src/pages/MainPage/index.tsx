@@ -3,20 +3,20 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import axios from "axios";
 
+interface Stock {
+  id: number;
+  stockName: string;
+  currentPrice: number;
+  marketCapitalization: number;
+  tradingVolume: number;
+}
+
 export default function MainPage() {
-  const [stocks, setStocks] = useState([
-    {
-      id: 1,
-      stockName: "Apple Inc.",
-      currentPrice: 148.56,
-      marketCapitalization: 148.56,
-      tradingVolume: 148.56,
-    },
-  ]);
-  const [deleteStock, setDeleteStock] = useState<string[]>([]);
+  const [stocks, setStocks] = useState<Stock[]>([]);
+  const [deleteStock, setDeleteStock] = useState<number[]>([]);
   useEffect(() => {
     axios
-      .get("http://localhost:8080/stocks")
+      .get<Stock[]>("http://localhost:8080/stocks")
       .then((res) => {
         console.log(res.data);
         setStocks(res.data);
@@ -26,32 +26,11 @@ export default function MainPage() {
       });
   }, []);
   const navigate = useNavigate();
-  // const stocks = [
-  //   {
-  //     id: 1,
-  //     stockName: "Apple Inc.",
-  //     currentPrice: 148.56,
-  //     marketCapitalization: 148.56,
-  //     tradingVolume: 148.56,
-  //   },
-  //   {
-  //     id: 2,
-  //     stockName: "Alphabet Inc.",
-  //     currentPrice: 2678.12,
-  //     marketCapitalization: 148.56,
-  //     tradingVolume: 148.56,
-  //   },
-  //   {
-  //     id: 3,
-  //     stockName: "Microsoft Corporation",
-  //     currentPrice: 286.54,
-  //     marketCapitalization: 148.56,
-  //     tradingVolume: 148.56,
-  //   },
-  // ];
+
   const handleCreateButton = () => {
     navigate("/stock/add");
   };
+
   return (
     <div className="flex flex-col h-[80vh] w-[100%]">
       <h1>주식 리스트</h1>
@@ -75,12 +54,10 @@ export default function MainPage() {
                 onChange={(e) => {
                   const { value, checked } = e.target;
                   if (checked) {
-                    // 체크되었을 때, 해당 id를 deleteStock 배열에 추가
-                    setDeleteStock([...deleteStock, value]);
+                    setDeleteStock([...deleteStock, Number(value)]);
                   } else {
-                    // 체크가 해제되었을 때, 해당 id를 deleteStock 배열에서 제거
                     setDeleteStock((prevDeleteStock) =>
-                      prevDeleteStock.filter((id) => id !== value)
+                      prevDeleteStock.filter((id) => id !== Number(value))
                     );
                   }
                 }}

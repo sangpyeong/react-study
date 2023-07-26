@@ -1,13 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
+interface Stock {
+  id: number;
+  stockName: string;
+  currentPrice: number;
+  marketCapitalization: number;
+  tradingVolume: number;
+}
+
 export default function DetailPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/stock/${id}`)
+      .get<Stock>(`http://localhost:8080/stock/${id}`)
       .then((res) => {
         console.log(res.data);
         setStock(res.data);
@@ -15,27 +23,20 @@ export default function DetailPage() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [id]); // Added dependency to re-fetch data when the 'id' changes
   const [edit, setEdit] = useState(false);
   const [stockName, setStockName] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
   const [marketCapitalization, setMarketCapitalization] = useState("");
   const [tradingVolume, setTradingVolume] = useState("");
   const navigate = useNavigate();
-  const [stock, setStock] = useState({
+  const [stock, setStock] = useState<Stock>({
     id: 1,
     stockName: "Apple Inc.",
     currentPrice: 148.56,
     marketCapitalization: 148.56,
     tradingVolume: 148.56,
   });
-  // const stock = {
-  //   id: 1,
-  //   stockName: "Apple Inc.",
-  //   currentPrice: 148.56,
-  //   marketCapitalization: 148.56,
-  //   tradingVolume: 148.56,
-  // };
 
   return (
     <div className="flex flex-col h-[80vh] w-[100%]">
