@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import Input from "../../components/Input";
 
 interface StockData {
   stockName: string;
@@ -18,6 +19,11 @@ export default function AddPage() {
   const [marketCapitalization, setMarketCapitalization] = useState("");
   const [tradingVolume, setTradingVolume] = useState("");
 
+  const stockNameRef = useRef<HTMLInputElement>(null);
+  const currentPriceRef = useRef<HTMLInputElement>(null);
+  const marketCapitalizationRef = useRef<HTMLInputElement>(null);
+  const tradingVolumeRef = useRef<HTMLInputElement>(null);
+
   const handleCreateButton = () => {
     const newStockData: StockData = {
       stockName,
@@ -27,7 +33,7 @@ export default function AddPage() {
     };
 
     console.log(newStockData);
-    
+
     axios
       .post("http://localhost:8080/stock/add", newStockData)
       .then((res) => {
@@ -52,6 +58,7 @@ export default function AddPage() {
           placeholder="주식 이름"
           className="w-[30%] border"
           value={stockName}
+          ref={stockNameRef}
           onChange={(e) => {
             setStockName(e.target.value);
           }}
