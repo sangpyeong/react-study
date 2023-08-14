@@ -78,20 +78,19 @@ export default function MainPage() {
       .post("http://localhost:8080/stocks/delete", deleteStock)
       .then((res) => {
         console.log(res.data);
+        axios
+          .get<Stock[]>("http://localhost:8080/stocks")
+          .then((res) => {
+            console.log(res.data);
+            setStocks(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
       });
-    axios
-      .get<Stock[]>("http://localhost:8080/stocks")
-      .then((res) => {
-        console.log(res.data);
-        setStocks(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    navigate("/stocks");
   };
 
   return (
